@@ -1,0 +1,6 @@
+@RESTfulAspNetWithChatGPT_HostAddress = http://localhost:5227
+
+GET {{RESTfulAspNetWithChatGPT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
