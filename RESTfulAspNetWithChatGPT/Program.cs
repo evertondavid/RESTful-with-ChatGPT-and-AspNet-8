@@ -1,44 +1,29 @@
+using RESTfulAspNetWithChatGPT.Extensions;
+
+var appName = "RESTful AspNet 8 With ChatGPT";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.AddChatGPT(/*builder.Configuration*/); // Add ChatGPT service
+builder.AddSerilog(builder.Configuration, appName); // Add Serilog service
+builder.Services.AddRouting(options => options.LowercaseUrls = true); // Add routing service to the container
+builder.Services.AddControllers(); // Add MVC service
+builder.Services.AddSwagger(builder.Configuration, appName); // Add Swagger service
+builder.Services.AddEndpointsApiExplorer(); // Add API Explorer service
 
-var app = builder.Build();
+var app = builder.Build(); // Build the application
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerDoc(appName); // Use Swagger documentation
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // Use HTTPS redirection
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapControllers(); // Map controllers
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+/// <summary>
+/// Default route for the application
+/// </summary>
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Chat}/{action=Chat}/{id?}");
 
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+app.Run(); // Run the application

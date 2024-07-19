@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "660098b1-b57f-4191-a828-f9ab2e87c226",
+		"name": "RESTful AspNet with ChatGPT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4881582"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5227/bot/chat?prompt=Qual a população da China%3f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"model\": \"gpt-3.5-turbo\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Some 2 + 3\"\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5227/bot/chat?prompt=Qual a população da China%3f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5227",
+					"path": [
+						"bot",
+						"chat"
+					],
+					"query": [
+						{
+							"key": "prompt",
+							"value": "Qual a população da China%3f"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
